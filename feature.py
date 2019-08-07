@@ -14,7 +14,7 @@ print('Loading PCA model...')
 pca = joblib.load('PCA')
 print('Loading PCA complete. Time used: ', time.time() - start)
 start = time.time()
-scaler = preprocessing.StandardScaler()
+scaler = preprocessing.StandardScaler(copy=False)
 while n <= 9000:
     print(f'Loading data part {part}...')
     start = time.time()
