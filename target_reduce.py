@@ -15,28 +15,28 @@ pca = joblib.load('PCA_target')
 print('Loading PCA complete. Time used: ', time.time() - start)
 start = time.time()
 scaler = preprocessing.StandardScaler(copy=False)
-while n <= 9000:
-    print(f'Loading data part {part}...')
-    start = time.time()
-    with h5py.File('train.h5', 'r') as ipt:
-        for i in range(n-1000, n):
-            sample = ipt[f'{i:04d}']['isoE'][...]
-            data[i-part * 1000] = sample.reshape((1, N2))
-    print('Loading complete. Time used: ', time.time() - start)
-    print(f'Scaling data part {part}...')
-    start = time.time()
-    scaler.fit(data)
-    data_scaled = scaler.transform(data)
-    print('Scaling complete. Time used: ', time.time() - start)
-    print(f'Feature extracting with PCA part {part}...')
-    start = time.time()
-    data_reduced = pca.transform(data_scaled)
-    print('Feature extracting complete. Time used: ', time.time() - start)
-    print(f'Saving reduced data part {part}...')
-    start = time.time()
-    with h5py.File('train_target.h5', 'w') as opt:
-        opt.create_group('/feature')
-        opt['feature'][f'{part}'] = data_reduced
-    print(f'Complete saving. Time used: ', time.time() - start)
-    n += 1000
-    part += 1
+with h5py.File('train_target.h5', 'w') as opt:
+    opt.create_group('/target')
+    while n <= 9000:
+        print(f'Loading data part {part}...')
+        start = time.time()
+        with h5py.File('train.h5', 'r') as ipt:
+            for i in range(n-1000, n):
+                sample = ipt[f'{i:04d}']['isoE'][...]
+                data[i-part * 1000] = sample.reshape((1, N2))
+        print('Loading complete. Time used: ', time.time() - start)
+        print(f'Scaling data part {part}...')
+        start = time.time()
+        scaler.fit(data)
+        data_scaled = scaler.transform(data)
+        print('Scaling complete. Time used: ', time.time() - start)
+        print(f'Feature extracting with PCA part {part}...')
+        start = time.time()
+        data_reduced = pca.transform(data_scaled)
+        print('Feature extracting complete. Time used: ', time.time() - start)
+        print(f'Saving reduced data part {part}...')
+        start = time.time()
+        opt['target'][f'{part}'] = data_reduced
+        print(f'Complete saving. Time used: ', time.time() - start)
+        n += 1000
+        part += 1
