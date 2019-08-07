@@ -4,17 +4,17 @@ import numpy as np
 from sklearn import decomposition
 from sklearn import preprocessing
 from sklearn.externals import joblib
-N = 1005
-N2 = N*N
-n = 1000
-nComp = n
-part = 0
+N = 201  # length of target data
+N2 = N * N  # N square
+n = 1000  # samples per part
+nComp = 1000  # n_components in PCA
+part = 0  # current part
 start = time.time()
 data = np.empty((n, N2), dtype=float)
 print(f'Loading data part {part} from training set...')
 with h5py.File('train.h5', 'r') as ipt:
     for i in range(n):
-        sample = ipt[f'{i:04d}']['QPI'][...]
+        sample = ipt[f'{i:04d}']['isoE'][...]
         sample = sample.reshape((1, N2))
         data[i] = sample
 print('Loading complete. Time used: ', time.time() - start)
@@ -32,5 +32,5 @@ data_reduced = pca.transform(data_scaled)
 print('Feature extracting complete. Time used: ', time.time() - start)
 start = time.time()
 print('Saving PCA model...')
-joblib.dump(pca, 'PCA')
+joblib.dump(pca, 'PCA_target')
 print(pca.explained_variance_ratio_)

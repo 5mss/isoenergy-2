@@ -3,15 +3,15 @@ import time
 import numpy as np
 from sklearn import preprocessing
 from sklearn.externals import joblib
-N = 1005
+N = 201  # length of target data
 N2 = N*N
-n = 2000
-part_size = 1000
-part = 1
+n = 1000  # current line
+part_size = 1000  # samples per part
+part = 0  # current part
 data = np.empty((part_size, N2), dtype=float)
 start = time.time()
 print('Loading PCA model...')
-pca = joblib.load('PCA')
+pca = joblib.load('PCA_target')
 print('Loading PCA complete. Time used: ', time.time() - start)
 start = time.time()
 scaler = preprocessing.StandardScaler(copy=False)
@@ -20,7 +20,7 @@ while n <= 9000:
     start = time.time()
     with h5py.File('train.h5', 'r') as ipt:
         for i in range(n-1000, n):
-            sample = ipt[f'{i:04d}']['QPI'][...]
+            sample = ipt[f'{i:04d}']['isoE'][...]
             data[i-part * 1000] = sample.reshape((1, N2))
     print('Loading complete. Time used: ', time.time() - start)
     print(f'Scaling data part {part}...')
@@ -34,7 +34,7 @@ while n <= 9000:
     print('Feature extracting complete. Time used: ', time.time() - start)
     print(f'Saving reduced data part {part}...')
     start = time.time()
-    with h5py.File('train_feature.h5', 'w') as opt:
+    with h5py.File('train_target.h5', 'w') as opt:
         opt.create_group('/feature')
         opt['feature'][f'{part}'] = data_reduced
     print(f'Complete saving. Time used: ', time.time() - start)
