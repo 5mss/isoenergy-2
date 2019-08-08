@@ -7,7 +7,7 @@ import sklearn.neural_network as sk_nn
 
 part = 0  # current part
 print('Initializing model...')
-nnModel = sk_nn.MLPRegressor(activation='tanh', solver='adam', hidden_layer_sizes=(6000, ), random_state=1)
+nnModel = sk_nn.MLPRegressor(activation='tanh', solver='adam', hidden_layer_sizes=(5500, ), random_state=1)
 with h5py.File('train_feature.h5', 'r') as fin:
     X_test = fin['feature'][f'{part}'][...]
 with h5py.File('train_target.h5', 'r') as tin:
