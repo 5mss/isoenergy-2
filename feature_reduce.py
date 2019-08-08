@@ -5,9 +5,9 @@ from sklearn import preprocessing
 from sklearn.externals import joblib
 N = 1005  # length of feature data
 N2 = N*N
-n = 1000  # current line
+n = 4000  # current line
 part_size = 1000
-part = 0  # current part
+part = 3  # current part
 data = np.empty((part_size, N2), dtype=float)
 start = time.time()
 print('Loading PCA model...')
@@ -15,8 +15,8 @@ pca = joblib.load('PCA')
 print('Loading PCA complete. Time used: ', time.time() - start)
 start = time.time()
 scaler = preprocessing.StandardScaler(copy=False)
-with h5py.File('train_feature.h5', 'w') as opt:
-    opt.create_group('/feature')
+with h5py.File('train_feature.h5', 'a') as opt:
+    # opt.create_group('/feature')
     while n <= 9000:
         print(f'Loading data part {part}...')
         start = time.time()
@@ -40,3 +40,4 @@ with h5py.File('train_feature.h5', 'w') as opt:
         print(f'Complete saving. Time used: ', time.time() - start)
         n += 1000
         part += 1
+    print(opt['feature'].keys())
