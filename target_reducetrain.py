@@ -7,7 +7,7 @@ from sklearn.externals import joblib
 N = 201  # length of target data
 N2 = N * N  # N square
 n = 9000  # samples per part
-nComp = 5000  # n_components in PCA
+nComp = 1000  # n_components in PCA
 part = 0  # current part
 start = time.time()
 data = np.empty((n, N2), dtype=float)
@@ -27,7 +27,6 @@ start = time.time()
 print(f'Feature extracting with PCA part {part}...')
 pca = decomposition.PCA(n_components=nComp, whiten=False, svd_solver='auto')
 pca.fit(data_scaled)
-data_reduced = pca.transform(data_scaled)
 print('Feature extracting complete. Time used: ', time.time() - start)
 start = time.time()
 print('Saving PCA model...')

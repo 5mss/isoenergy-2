@@ -16,3 +16,5 @@ with h5py.File('train_target_unreduced.h5', 'w') as opt:
                 sample = ipt[f'{i:04d}']['isoE'][...]
                 data[i - part * 1000] = sample.reshape((1, N2))
         opt['target'][f'{part}'] = data
+        part += 1
+        n += 1000
