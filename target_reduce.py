@@ -11,11 +11,11 @@ part = 0  # current part
 data = np.empty((part_size, N2), dtype=float)
 start = time.time()
 print('Loading PCA model...')
-pca = joblib.load('PCA_target')
+pca = joblib.load('PCA_target_4')
 print('Loading PCA complete. Time used: ', time.time() - start)
 start = time.time()
 scaler = joblib.load('Scaler_target')
-with h5py.File('train_target.h5', 'w') as opt:
+with h5py.File('train_target_4.h5', 'w') as opt:
     opt.create_group('/target')
     while n <= 9000:
         print(f'Loading data part {part}...')

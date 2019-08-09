@@ -7,7 +7,7 @@ from sklearn.externals import joblib
 N = 201  # length of target data
 N2 = N * N  # N square
 n = 9000  # samples per part
-nComp = 1000  # n_components in PCA
+nComp = 400  # n_components in PCA
 part = 0  # current part
 start = time.time()
 data = np.empty((n, N2), dtype=float)
@@ -30,5 +30,5 @@ pca.fit(data_scaled)
 print('Feature extracting complete. Time used: ', time.time() - start)
 start = time.time()
 print('Saving PCA model...')
-joblib.dump(pca, 'PCA_target_9_5')
+joblib.dump(pca, 'PCA_target_4')
 print(pca.explained_variance_ratio_)
