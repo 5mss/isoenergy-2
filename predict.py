@@ -33,8 +33,8 @@ with h5py.File('X_pred.h5', 'w') as xp:
     xp['feature'] = X_pred
 print('Saving complete. Time used: ', time.time() - start)
 print('Loading models...')
-nnModel = joblib.load('nnModel_8')
-pca_target = joblib.load('PCA_target_8')
+nnModel = joblib.load('lsModel')
+pca_target = joblib.load('PCA_target')
 scaler_target = joblib.load('Scaler_target')
 print('Predicting...')
 Y_pred = nnModel.predict(X_pred)
@@ -42,7 +42,7 @@ print('Recovering...')
 out_scaled = pca_target.inverse_transform(Y_pred)
 out = scaler_target.inverse_transform(out_scaled)
 print('Saving...')
-with h5py.File('answer_8.h5', 'w') as opt:
+with h5py.File('answer_ls.h5', 'w') as opt:
     for i in range(900):
         opt.create_group(f'{i:04d}')
         opt[f'{i:04d}']['isoE'] = out[i].reshape((Nt, Nt))
