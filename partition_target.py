@@ -2,6 +2,8 @@ import h5py
 import time
 import numpy as np
 
+# partition training isoE data in 9 parts
+
 N = 201  # length of target data
 N2 = N*N
 n = 1000  # current line

@@ -11,7 +11,7 @@ part = 0  # current part
 data = np.empty((part_size, 1), dtype=float)
 start = time.time()
 scaler = preprocessing.StandardScaler(copy=False)
-while n <= 9000:
+while n <= 9000:  # load data
     print(f'Loading data part {part}...')
     start = time.time()
     with h5py.File('train.h5', 'r') as ipt:
@@ -21,7 +21,7 @@ while n <= 9000:
     print('Loading complete. Time used: ', time.time() - start)
     print(f'Scaling data part {part}...')
     start = time.time()
-    scaler.partial_fit(data)
+    scaler.partial_fit(data)  # train scaler of coefficient A
     print('Scaling complete. Time used: ', time.time() - start)
     n += 1000
     part += 1

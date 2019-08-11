@@ -11,7 +11,7 @@ part = 0  # current part
 data = np.empty((part_size, 1), dtype=float)
 start = time.time()
 scaler = joblib.load('Scaler_sum')
-with h5py.File('train_target_sum.h5', 'w') as opt:
+with h5py.File('train_target_sum.h5', 'w') as opt:  # compute and save coefficient A
     opt.create_group('/target')
     while n <= 9000:
         print(f'Loading data part {part}...')

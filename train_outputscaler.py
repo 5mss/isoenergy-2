@@ -12,8 +12,8 @@ part_size = 1000  # samples per part
 part = 0  # current part
 data = np.empty((part_size, N2), dtype=float)
 start = time.time()
-scaler = preprocessing.StandardScaler(copy=False)
-while n <= 9000:
+scaler = preprocessing.StandardScaler(copy=False)  # initializing scaler
+while n <= 9000:  # training scaler
     print(f'Loading data part {part}...')
     start = time.time()
     with h5py.File('train.h5', 'r') as ipt:
@@ -27,4 +27,4 @@ while n <= 9000:
     print('Scaling complete. Time used: ', time.time() - start)
     n += 1000
     part += 1
-joblib.dump(scaler, 'Scaler_target')
+joblib.dump(scaler, 'Scaler_target')  # saving scaler

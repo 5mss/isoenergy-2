@@ -1,5 +1,4 @@
 import h5py
-import numpy as np
 import matplotlib.pyplot as plt
 
 with h5py.File('answer_kr_20.h5', 'r') as ipt:

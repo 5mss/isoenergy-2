@@ -1,7 +1,6 @@
 import h5py
 import time
 import numpy as np
-from sklearn import preprocessing
 from sklearn.externals import joblib
 N = 201  # length of target data
 N2 = N*N
@@ -17,7 +16,7 @@ start = time.time()
 scaler = joblib.load('Scaler_target')
 with h5py.File('train_target_20.h5', 'w') as opt:
     opt.create_group('/target')
-    while n <= 9000:
+    while n <= 9000:  # loading data
         print(f'Loading data part {part}...')
         start = time.time()
         with h5py.File('train.h5', 'r') as ipt:
@@ -25,7 +24,7 @@ with h5py.File('train_target_20.h5', 'w') as opt:
                 sample = ipt[f'{i:04d}']['isoE'][...]
                 data[i-part * 1000] = sample.reshape((1, N2))
         print('Loading complete. Time used: ', time.time() - start)
-        print(f'Scaling data part {part}...')
+        print(f'Scaling data part {part}...')  # scale input data
         start = time.time()
         data_scaled = scaler.transform(data)
         print('Scaling complete. Time used: ', time.time() - start)
@@ -37,5 +36,5 @@ with h5py.File('train_target_20.h5', 'w') as opt:
         start = time.time()
         opt['target'][f'{part}'] = data_reduced
         print(f'Complete saving. Time used: ', time.time() - start)
-        n += 1000
+        n += part_size
         part += 1
