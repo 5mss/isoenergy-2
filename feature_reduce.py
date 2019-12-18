@@ -3,7 +3,7 @@ import time
 import numpy as np
 from sklearn import preprocessing
 from sklearn.externals import joblib
-N = 1005  # length of feature data
+N = 503  # length of feature data
 N2 = N*N
 n = 1000  # current line
 part_size = 1000
@@ -15,15 +15,15 @@ pca = joblib.load('PCA')
 print('Loading PCA complete. Time used: ', time.time() - start)
 start = time.time()
 scaler = joblib.load('Scaler_feature')
-with h5py.File('train_feature_t.h5', 'w') as opt:
+with h5py.File('train_input_reduced.h5', 'w') as opt:
     opt.create_group('/feature')
     while n <= 9000:
         print(f'Loading data part {part}...')
         start = time.time()
-        with h5py.File('train.h5', 'r') as ipt:
+        with h5py.File('train_input_polar.h5', 'r') as ipt:
             for i in range(n-1000, n):
                 sample = ipt[f'{i:04d}']['QPI'][...]
-                data[i-part * 1000] = sample.reshape((1, N2))
+                # data[i-part * 1000] = sample.reshape((1, N2))
         print('Loading complete. Time used: ', time.time() - start)
         print(f'Scaling data part {part}...')
         start = time.time()

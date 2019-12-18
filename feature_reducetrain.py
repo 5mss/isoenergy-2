@@ -4,7 +4,7 @@ import numpy as np
 from sklearn import decomposition
 from sklearn import preprocessing
 from sklearn.externals import joblib
-N = 1005  # length of input data
+N = 503  # length of input data
 N2 = N * N  # N square
 n = 1000  # samples per part
 nComp = n  # n_components in PCA
@@ -12,10 +12,10 @@ part = 0  # current part
 start = time.time()
 data = np.empty((n, N2), dtype=float)  # stores a part of input data
 print(f'Loading data part {part} from training set...')
-with h5py.File('train.h5', 'r') as ipt:
+with h5py.File('train_input_polar.h5', 'r') as ipt:
     for i in range(n):
         sample = ipt[f'{i:04d}']['QPI'][...]
-        sample = sample.reshape((1, N2))
+        # sample = sample.reshape((1, N2))
         data[i] = sample
 print('Loading complete. Time used: ', time.time() - start)
 start = time.time()

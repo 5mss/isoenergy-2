@@ -4,7 +4,9 @@ import numpy as np
 from sklearn import preprocessing
 from sklearn import decomposition
 from sklearn.externals import joblib
-N = 1005  # length of feature data
+import sys
+fn = sys.argv[1]
+N = 503  # length of feature data
 N2 = N*N
 n = 1000  # current line
 nComp = 1000  # n_components in PCA
@@ -16,10 +18,10 @@ scaler = preprocessing.StandardScaler(copy=False)  # initializing scaler
 while n <= 9000:  # training scaler
     print(f'Loading data part {part}...')
     start = time.time()
-    with h5py.File('train.h5', 'r') as ipt:
+    with h5py.File(fn, 'r') as ipt:
         for i in range(n-1000, n):
             sample = ipt[f'{i:04d}']['QPI'][...]
-            data[i-part * 1000] = sample.reshape((1, N2))
+            data[i-part * 1000] = sample
     print('Loading complete. Time used: ', time.time() - start)
     print(f'Scaling data part {part}...')
     start = time.time()

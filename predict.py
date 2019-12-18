@@ -9,38 +9,24 @@ N2 = N*N
 Nt = 201
 print('Loading input data...')
 start = time.time()
-data = np.empty((n_sample, N2), dtype=float)
-with h5py.File('problem.h5', 'r') as ipt:  # load data
-    for i in range(900):
-        sample = ipt[f'{i:04d}']['QPI'][...]
-        data[i] = sample.reshape((1, N2))
-print('Loading complete. Time used: ', time.time() - start)
-print('Scaleing input data...')
-start = time.time()
-scaler_feature = joblib.load('Scaler_feature')  # scale input data
-data_scaled = scaler_feature.transform(data)
-print('Scaling complete. Time used: ', time.time() - start)
-print('Feature extracting...')  # feature extract
-start = time.time()
-pca_feature = joblib.load('PCA')
-X_pred = pca_feature.transform(data_scaled)
-print('Feature extracting complete. Time used: ', time.time() - start)
-print('Saving predict data...')
-start = time.time()
-with h5py.File('X_pred.h5', 'w') as xp:  # saving preprocessed input
-    xp['feature'] = X_pred
-print('Saving complete. Time used: ', time.time() - start)
+with h5py.File('target2_.h5', 'r') as xp:  # loading problem data
+    X_pred = xp['QPI'][...]
+
+# Nt = int(len(X_pred) / 10)
+# X_pred = X_pred[0:Nt]
 print('Loading models...')  # loading models
-nnModel = joblib.load('krModel_20')
-pca_target = joblib.load('PCA_target_20')
+Model = joblib.load('testModel0')
+pca_target = joblib.load('PCA_target_1500')
 scaler_target = joblib.load('Scaler_target')
-print('Predicting...') # predicting
-Y_pred = nnModel.predict(X_pred)
+print('Predicting...')  # predicting
+Y_pred = Model.predict(X_pred)
 print('Recovering...')  # recover
-out_scaled = pca_target.inverse_transform(Y_pred)
-out = scaler_target.inverse_transform(out_scaled)
+# out_scaled = pca_target.inverse_transform(Y_pred)
+# out = scaler_target.inverse_transform(out_scaled)
 print('Saving...')
-with h5py.File('answer_kr_20.h5', 'w') as opt: # save output data
-    for i in range(900):
+n = len(Y_pred)
+with h5py.File('answer_polar_class2.h5', 'w') as opt:  # save output data
+    for i in range(n):
         opt.create_group(f'{i:04d}')
-        opt[f'{i:04d}']['isoE'] = out[i].reshape((Nt, Nt))
+        opt[f'{i:04d}']['isoE'] = Y_pred[i]
+            # .reshape((Nt, Nt))
